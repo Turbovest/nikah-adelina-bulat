@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Булат & Аделина • Приглашение на никах</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          alabaster: '#F6F4F0',
+          card: '#FDFBF7',
+          emerald: {
+            deep: '#162A22',
+            muted: '#264237',
+            soft: '#EBF0EC'
+          },
+          gold: {
+            DEFAULT: '#C5A880',
+            light: '#E2D5C1',
+            dark: '#9E8158'
+          },
+          ink: {
+            DEFAULT: '#162A22',
+            muted: '#5C6963',
+            subtle: '#8B9690'
+          }
+        },
+        fontFamily: {
+          serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+          sans: ['"Manrope"', 'system-ui', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  :root {
+    --alabaster: #F6F4F0;
+    --card: #FDFBF7;
+    --emerald-deep: #162A22;
+    --gold: #C5A880;
+    --gold-light: #E2D5C1;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #11201A;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    color: var(--emerald-deep);
+    background-color: #11201A;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Десктопный глубокий изумрудный фон вокруг мобильного полотна */
+  .desktop-backdrop {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 15%, #1D362C 0%, #0D1914 80%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Тончайшая текстура бумаги */
+  .paper-grain {
+    background-image: radial-gradient(rgba(197, 168, 128, 0.13) 1px, transparent 0);
+    background-size: 26px 26px;
+  }
+
+  /* Архитектурная арка главного экрана с двойной тонкой золотой рамкой */
+  .hero-arch {
+    border-radius: 230px 230px 28px 28px;
+    position: relative;
+    background: linear-gradient(180deg, #FDFBF7 0%, #F7F4EC 100%);
+    border: 1px solid rgba(197, 168, 128, 0.55);
+    box-shadow: 0 22px 55px rgba(22, 42, 34, 0.06);
+  }
+  .hero-arch::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border-radius: 223px 223px 21px 21px;
+    border: 1px solid rgba(197, 168, 128, 0.35);
+    pointer-events: none;
+  }
+
+  /* Анимация плавного появления секций */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Тактильные карточки выбора в анкете */
+  .choice-input:checked + .choice-card {
+    background-color: #162A22;
+    color: #FDFBF7;
+    border-color: #162A22;
+    box-shadow: 0 10px 24px -6px rgba(22, 42, 34, 0.25);
+  }
+  .choice-input:checked + .choice-card .choice-dot {
+    border-color: #C5A880;
+    background-color: #C5A880;
+    box-shadow: inset 0 0 0 3px #162A22;
+  }
+  .choice-input:checked + .choice-card .choice-sub {
+    color: #E2D5C1;
+  }
+
+  /* Стилизация полей ввода */
+  .editorial-input {
+    width: 100%;
+    background-color: #FDFBF7;
+    border: 1px solid #E2D5C1;
+    border-radius: 14px;
+    padding: 15px 18px;
+    font-size: 14px;
+    color: #162A22;
+    transition: all 0.25s ease;
+  }
+  .editorial-input::placeholder {
+    color: #9AA39E;
+    font-weight: 300;
+  }
+  .editorial-input:focus {
+    outline: none;
+    border-color: #C5A880;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(197, 168, 128, 0.2);
+  }
+
+  /* Индикатор загрузки */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(253, 251, 247, 0.3);
+    border-top-color: #C5A880;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Деликатная цветокоррекция карты */
+  .map-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: sepia(10%) saturate(85%) contrast(97%);
+  }
+</style>
+</head>
+<body class="selection:bg-gold/30 selection:text-emerald-deep">
+
+<!-- Глубокий изумрудный фон для широких экранов -->
+<div class="desktop-backdrop"></div>
+
+<!-- Модальное окно подтверждения после отправки анкеты -->
+<div id="rsvpModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+  class="fixed inset-0 z-50 hidden items-center justify-center p-5 bg-emerald-deep/70 backdrop-blur-sm transition-opacity duration-300">
+  <div class="relative w-full max-w-sm rounded-[28px] bg-card p-8 text-center border border-gold/50 shadow-2xl">
+    <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-alabaster border border-gold/40">
+      <svg class="w-6 h-6 text-gold-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.2 6.3L21 12l-6.8 2.7L12 21l-2.2-6.3L3 12l6.8-2.7L12 3z"/>
+      </svg>
+    </div>
+    <p class="text-[10px] uppercase tracking-[0.28em] text-gold-dark mb-2" id="modalKicker">Анкета учтена</p>
+    <h3 id="modalTitle" class="font-serif text-3xl font-normal text-emerald-deep mb-3">Благодарим вас!</h3>
+    <p id="modalText" class="text-sm text-ink-muted leading-relaxed mb-7 font-light"></p>
+    <button type="button" onclick="closeModal()"
+      class="w-full py-3.5 rounded-xl bg-emerald-deep text-card text-xs uppercase tracking-[0.2em] font-medium transition hover:bg-emerald-muted">
+      Закрыть
+    </button>
+  </div>
+</div>
+
+<!-- Основное мобильное полотно -->
+<main class="relative z-10 mx-auto max-w-[480px] min-h-screen bg-alabaster paper-grain shadow-[0_0_80px_rgba(0,0,0,0.45)] pb-16 overflow-hidden">
+
+  <!-- 1. ГЛАВНЫЙ ЭКРАН (HERO SECTION) -->
+  <div class="pt-6 px-5">
+    <div class="flex items-center justify-between text-[10px] uppercase tracking-[0.26em] text-ink-muted/80 px-2 mb-4">
+      <span>18.06.2027</span>
+      <span class="text-gold-dark">❖</span>
+      <span>Казань</span>
+    </div>
+
+    <section class="hero-arch px-6 pt-11 pb-10 text-center">
+      <!-- Минималистичная эмблема полумесяца и звезды -->
+      <div class="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-gold/45 bg-alabaster/70">
+        <svg class="w-5 h-5 text-gold-dark" viewBox="0 0 32 32" fill="none">
+          <path d="M19.5 6.5C14.8 7.6 11.5 11.8 11.5 16.8C11.5 22.6 16.2 27.3 22 27.3C23.8 27.3 25.5 26.8 27 26C24.7 28.2 21.6 29.5 18.2 29.5C11.1 29.5 5.4 23.8 5.4 16.7C5.4 10.6 9.7 5.5 15.4 4.2C16.8 3.9 18.2 5.1 19.5 6.5Z" fill="currentColor" opacity="0.88"/>
+          <path d="M23 9L24.1 11.9L27 13L24.1 14.1L23 17L21.9 14.1L19 13L21.9 11.9L23 9Z" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <!-- Надзаголовок -->
+      <p class="text-[9.5px] uppercase tracking-[0.24em] text-gold-dark font-medium mb-3 leading-relaxed">
+        С ЛЮБОВЬЮ И БЛАГОДАРНОСТЬЮ ВСЕВЫШНЕМУ
+      </p>
+
+      <!-- Заголовок -->
+      <h1 class="font-serif text-[44px] leading-[1.02] font-normal text-emerald-deep">
+        Приглашение
+      </h1>
+      <p class="font-serif italic text-[26px] text-gold-dark -mt-1 mb-5">
+        на никах
+      </p>
+
+      <!-- Имена молодоженов -->
+      <div class="font-serif italic text-[46px] leading-none font-medium text-emerald-deep my-4 flex items-center justify-center gap-3">
+        <span>Булат</span>
+        <span class="font-serif not-italic font-normal text-3xl text-gold">&amp;</span>
+        <span>Аделина</span>
+      </div>
+
+      <!-- Ювелирный разделитель -->
+      <div class="flex items-center justify-center gap-3 my-5">
+        <span class="h-[1px] w-14 bg-gold/50"></span>
+        <span class="h-2 w-2 rotate-45 border border-gold"></span>
+        <span class="h-[1px] w-14 bg-gold/50"></span>
+      </div>
+
+      <!-- Приветственный текст -->
+      <p class="text-[13.5px] leading-[1.7] text-ink-muted font-light max-w-[335px] mx-auto mb-7">
+        С радостью приглашаем вас разделить с нами особенный день — день нашего никаха. Будем счастливы видеть вас рядом и разделить эту благословенную радость.
+      </p>
+
+      <!-- Бейдж с датой -->
+      <div class="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-card border border-gold/50 text-emerald-deep mb-7 shadow-sm">
+        <svg class="w-3.5 h-3.5 text-gold-dark" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z"/>
+        </svg>
+        <span class="font-serif text-xl tracking-wide font-medium">18 июня 2027</span>
+      </div>
+
+      <!-- Мини-календарь на Июнь 2027 -->
+      <div class="mx-auto max-w-[320px] rounded-2xl bg-alabaster/75 border border-gold/30 p-4 mb-7">
+        <div class="text-[10px] uppercase tracking-[0.22em] text-gold-dark mb-2.5 font-medium">Июнь 2027</div>
+        <div class="grid grid-cols-7 gap-1 text-[10px] uppercase tracking-wider text-ink-subtle mb-1.5">
+          <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+        </div>
+        <div class="grid grid-cols-7 gap-1 items-center font-serif text-[17px] text-emerald-deep">
+          <span class="opacity-45">14</span>
+          <span class="opacity-45">15</span>
+          <span class="opacity-45">16</span>
+          <span class="opacity-45">17</span>
+          <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-emerald-deep text-card font-medium ring-2 ring-gold shadow-sm">18</span>
+          <span class="opacity-45">19</span>
+          <span class="opacity-45">20</span>
+        </div>
+      </div>
+
+      <!-- 4-колоночный живой таймер -->
+      <div class="grid grid-cols-4 gap-2.5 max-w-[340px] mx-auto" id="countdown">
+        <div class="rounded-2xl bg-card border border-gold/40 py-3.5 px-1 shadow-sm">
+          <span id="days" class="block font-serif text-[30px] font-medium text-emerald-deep leading-none">00</span>
+          <span class="block text-[9px] uppercase tracking-[0.16em] text-ink-muted mt-1.5">дней</span>
+        </div>
+        <div class="rounded-2xl bg-card border border-gold/40 py-3.5 px-1 shadow-sm">
+          <span id="hours" class="block font-serif text-[30px] font-medium text-emerald-deep leading-none">00</span>
+          <span class="block text-[9px] uppercase tracking-[0.16em] text-ink-muted mt-1.5">часов</span>
+        </div>
+        <div class="rounded-2xl bg-card border border-gold/40 py-3.5 px-1 shadow-sm">
+          <span id="minutes" class="block font-serif text-[30px] font-medium text-emerald-deep leading-none">00</span>
+          <span class="block text-[9px] uppercase tracking-[0.16em] text-ink-muted mt-1.5">минут</span>
+        </div>
+        <div class="rounded-2xl bg-card border border-gold/40 py-3.5 px-1 shadow-sm">
+          <span id="seconds" class="block font-serif text-[30px] font-medium text-emerald-deep leading-none">00</span>
+          <span class="block text-[9px] uppercase tracking-[0.16em] text-ink-muted mt-1.5">секунд</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Ювелирный разделитель секций -->
+  <div class="flex items-center justify-center gap-4 my-10 px-10">
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+    <div class="h-1.5 w-1.5 rotate-45 bg-gold"></div>
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+  </div>
+
+  <!-- 2. ПРОГРАММА ДНЯ -->
+  <section class="reveal px-6">
+    <div class="text-center mb-8">
+      <p class="text-[10px] uppercase tracking-[0.28em] text-gold-dark mb-1.5">Тайминг торжества</p>
+      <h2 class="font-serif text-4xl font-normal text-emerald-deep">Программа дня</h2>
+    </div>
+
+    <div class="relative mx-auto rounded-3xl bg-card border border-gold/40 p-6 shadow-sm">
+      <!-- Вертикальная золотая ось -->
+      <div class="absolute left-[96px] top-9 bottom-9 w-[1px] bg-gradient-to-b from-gold/25 via-gold to-gold/25"></div>
+
+      <!-- 15:00 -->
+      <div class="relative grid grid-cols-[62px_24px_1fr] items-start gap-3 pb-8">
+        <div class="font-serif italic text-2xl text-emerald-deep text-right leading-none pt-0.5">15:00</div>
+        <div class="flex justify-center pt-1.5">
+          <span class="h-2.5 w-2.5 rotate-45 bg-gold ring-4 ring-card"></span>
+        </div>
+        <div>
+          <h3 class="text-[15px] font-medium text-emerald-deep leading-snug">Встреча гостей</h3>
+          <p class="text-xs text-ink-muted font-light leading-relaxed mt-1">Приветствие, встреча с родными и близкими</p>
+        </div>
+      </div>
+
+      <!-- 13:00 -->
+      <div class="relative grid grid-cols-[62px_24px_1fr] items-start gap-3 pb-8">
+        <div class="font-serif italic text-2xl text-emerald-deep text-right leading-none pt-0.5">15:30</div>
+        <div class="flex justify-center pt-1.5">
+          <span class="h-2.5 w-2.5 rotate-45 bg-emerald-deep border border-gold ring-4 ring-card"></span>
+        </div>
+        <div>
+          <h3 class="text-[15px] font-medium text-emerald-deep leading-snug">Роспись</h3>
+          <p class="text-xs text-ink-muted font-light leading-relaxed mt-1">Торжественная роспись молодых</p>
+        </div>
+      </div>
+
+      <!-- 14:30 -->
+      <div class="relative grid grid-cols-[62px_24px_1fr] items-start gap-3 pb-8">
+        <div class="font-serif italic text-2xl text-emerald-deep text-right leading-none pt-0.5">16:00</div>
+        <div class="flex justify-center pt-1.5">
+          <span class="h-2.5 w-2.5 rotate-45 bg-gold ring-4 ring-card"></span>
+        </div>
+        <div>
+          <h3 class="text-[15px] font-medium text-emerald-deep leading-snug">Фотосессия</h3>
+          <p class="text-xs text-ink-muted font-light leading-relaxed mt-1">Памятные снимки с близкими</p>
+        </div>
+      </div>
+
+      <!-- 15:30 -->
+      <div class="relative grid grid-cols-[62px_24px_1fr] items-start gap-3">
+        <div class="font-serif italic text-2xl text-emerald-deep text-right leading-none pt-0.5">16:30</div>
+        <div class="flex justify-center pt-1.5">
+          <span class="h-2.5 w-2.5 rotate-45 bg-emerald-deep border border-gold ring-4 ring-card"></span>
+        </div>
+        <div>
+          <h3 class="text-[15px] font-medium text-emerald-deep leading-snug">Ужин</h3>
+          <p class="text-xs text-ink-muted font-light leading-relaxed mt-1">Праздничный ужин, поздравления и тёплые слова</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ювелирный разделитель секций -->
+  <div class="flex items-center justify-center gap-4 my-10 px-10">
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+    <div class="h-1.5 w-1.5 rotate-45 bg-gold"></div>
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+  </div>
+
+  <!-- 3. ЛОКАЦИЯ -->
+  <section class="reveal px-6">
+    <div class="text-center mb-8">
+      <p class="text-[10px] uppercase tracking-[0.28em] text-gold-dark mb-1.5">Место проведения</p>
+      <h2 class="font-serif text-4xl font-normal text-emerald-deep">Локация</h2>
+    </div>
+
+    <div class="rounded-3xl bg-card border border-gold/40 p-6 shadow-sm text-center">
+      <h3 class="font-serif text-2xl font-medium text-emerald-deep leading-snug">
+        Мечеть «Ярдэм»
+      </h3>
+      <p class="text-[13.5px] text-ink-muted font-light mt-1.5 mb-5">
+        Казань, ул. Серова, 4А
+      </p>
+
+      <div class="map-frame h-[280px] w-full rounded-2xl overflow-hidden border border-gold/40 mb-5">
+        <iframe src="https://yandex.ru/map-widget/v1/?mode=search&text=%D0%BC%D0%B5%D1%87%D0%B5%D1%82%D1%8C%20%D0%AF%D1%80%D0%B4%D1%8D%D0%BC%2C%20%D0%9A%D0%B0%D0%B7%D0%B0%D0%BD%D1%8C%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A1%D0%B5%D1%80%D0%BE%D0%B2%D0%B0%2C%204%D0%90&z=16" allowfullscreen="true" loading="lazy" title="Карта локации"></iframe>
+      </div>
+
+      <a href="https://yandex.ru/maps/?text=%D0%BC%D0%B5%D1%87%D0%B5%D1%82%D1%8C%20%D0%AF%D1%80%D0%B4%D1%8D%D0%BC%2C%20%D0%9A%D0%B0%D0%B7%D0%B0%D0%BD%D1%8C%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A1%D0%B5%D1%80%D0%BE%D0%B2%D0%B0%2C%204%D0%90" target="_blank" rel="noopener noreferrer"
+        class="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-alabaster border border-gold/45 text-emerald-deep text-xs uppercase tracking-[0.18em] font-medium transition hover:bg-emerald-deep hover:text-card">
+        <svg class="w-4 h-4 text-gold-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        Открыть в Яндекс Картах
+      </a>
+    </div>
+  </section>
+
+  <!-- Ювелирный разделитель секций -->
+  <div class="flex items-center justify-center gap-4 my-10 px-10">
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+    <div class="h-1.5 w-1.5 rotate-45 bg-gold"></div>
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+  </div>
+
+  <!-- 4. ДРЕСС-КОД -->
+  <section class="reveal px-6">
+    <div class="text-center mb-8">
+      <p class="text-[10px] uppercase tracking-[0.28em] text-gold-dark mb-1.5">Пожелания к образам</p>
+      <h2 class="font-serif text-4xl font-normal text-emerald-deep">Дресс-код</h2>
+    </div>
+
+    <div class="rounded-3xl bg-card border border-gold/40 p-6 text-center shadow-sm">
+      <p class="font-serif text-2xl font-medium text-emerald-deep mb-3">Скромная одежда</p>
+      <p class="text-[13.5px] text-ink-muted font-light leading-relaxed mb-3">
+        Просим гостей выбрать скромную, закрытую одежду, подобающую посещению мечети.
+      </p>
+      <p class="text-[13px] text-ink-muted font-light leading-relaxed">
+        Девушкам: платье или юбка в пол, закрытые плечи и руки, платок.<br>
+        Мужчинам: брюки и рубашка с рукавом, без шорт.
+      </p>
+    </div>
+  </section>
+
+  <!-- Ювелирный разделитель секций -->
+  <div class="flex items-center justify-center gap-4 my-10 px-10">
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+    <div class="h-1.5 w-1.5 rotate-45 bg-gold"></div>
+    <div class="h-[1px] flex-1 bg-gold/35"></div>
+  </div>
+
+  <!-- 5. АНКЕТА ГОСТЯ (RSVP) -->
+  <section class="reveal px-6 pb-8">
+    <div class="text-center mb-8">
+      <p class="text-[10px] uppercase tracking-[0.28em] text-gold-dark mb-1.5">Ваш ответ</p>
+      <h2 class="font-serif text-4xl font-normal text-emerald-deep">Анкета гостя</h2>
+      <p class="text-xs text-ink-muted font-light mt-1.5">Пожалуйста, подтвердите своё присутствие заблаговременно</p>
+    </div>
+
+    <form id="weddingForm" class="rounded-3xl bg-card border border-gold/40 p-6 shadow-sm space-y-5">
+      <!-- Имя и Фамилия -->
+      <div>
+        <label for="guestNameInput" class="block text-[10px] uppercase tracking-[0.18em] text-emerald-deep font-medium mb-2">
+          Ваше имя и фамилия <span class="text-gold-dark">*</span>
+        </label>
+        <input id="guestNameInput" type="text" name="Имя и Фамилия" placeholder="Иван Иванов" required
+          class="editorial-input">
+      </div>
+
+      <!-- Присутствие -->
+      <div>
+        <span class="block text-[10px] uppercase tracking-[0.18em] text-emerald-deep font-medium mb-2.5">
+          Присутствие <span class="text-gold-dark">*</span>
+        </span>
+        <div class="grid grid-cols-1 gap-2.5">
+          <label class="cursor-pointer block">
+            <input type="radio" name="Присутствие" value="С удовольствием приду" required checked class="sr-only choice-input">
+            <div class="choice-card flex items-center justify-between rounded-2xl border border-gold-light bg-alabaster/60 px-4 py-3.5 transition-all duration-200">
+              <div>
+                <div class="text-sm font-medium">С удовольствием приду</div>
+                <div class="choice-sub text-[11px] text-ink-subtle font-light">Разделю с вами этот особенный день</div>
+              </div>
+              <span class="choice-dot h-4 w-4 rounded-full border border-gold-dark transition-all"></span>
+            </div>
+          </label>
+
+          <label class="cursor-pointer block">
+            <input type="radio" name="Присутствие" value="К сожалению, не смогу" class="sr-only choice-input">
+            <div class="choice-card flex items-center justify-between rounded-2xl border border-gold-light bg-alabaster/60 px-4 py-3.5 transition-all duration-200">
+              <div>
+                <div class="text-sm font-medium">К сожалению, не смогу</div>
+                <div class="choice-sub text-[11px] text-ink-subtle font-light">Мысленно буду рядом с вами</div>
+              </div>
+              <span class="choice-dot h-4 w-4 rounded-full border border-gold-dark transition-all"></span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Формат участия -->
+      <div>
+        <label for="formatSelect" class="block text-[10px] uppercase tracking-[0.18em] text-emerald-deep font-medium mb-2">
+          Формат участия <span class="text-gold-dark">*</span>
+        </label>
+        <div class="relative">
+          <select id="formatSelect" name="Формат участия" onchange="toggleCompanion(this)" required
+            class="editorial-input appearance-none pr-10 cursor-pointer">
+            <option value="" disabled selected>Выберите вариант</option>
+            <option value="Буду один / одна">Буду один / одна</option>
+            <option value="С парой (+1)">С парой (+1)</option>
+            <option value="С детьми / семьей">С детьми / семьей</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gold-dark">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Количество человек (динамическое поле) -->
+      <div id="companion-count-field" class="hidden">
+        <label for="companionCountInput" class="block text-[10px] uppercase tracking-[0.18em] text-emerald-deep font-medium mb-2">
+          Количество человек (включая вас)
+        </label>
+        <input id="companionCountInput" type="number" name="Количество человек" min="1" max="10" value="1" placeholder="Например: 3"
+          class="editorial-input">
+      </div>
+
+      <!-- Аллергии / Диета -->
+      <div>
+        <label for="allergyInput" class="block text-[10px] uppercase tracking-[0.18em] text-emerald-deep font-medium mb-2">
+          Аллергии / Диета <span class="normal-case tracking-normal font-light text-ink-subtle">(если нет, оставьте пустым)</span>
+        </label>
+        <input id="allergyInput" type="text" name="Аллергии / Диета" placeholder="Например: аллергия на орехи"
+          class="editorial-input">
+      </div>
+
+      <!-- Пожелания -->
+      <div>
+        <label for="wishesInput" class="block text-[10px] uppercase tracking-[0.18em] text-emerald-deep font-medium mb-2">
+          Пожелания
+        </label>
+        <textarea id="wishesInput" name="Пожелания" rows="3" placeholder="Ваши теплые пожелания или вопросы"
+          class="editorial-input resize-none"></textarea>
+      </div>
+
+      <!-- Кнопка отправки -->
+      <button type="submit" id="submitBtn"
+        class="w-full py-4 px-6 rounded-2xl bg-emerald-deep text-card text-xs uppercase tracking-[0.22em] font-medium shadow-lg shadow-emerald-deep/20 transition-all duration-300 hover:bg-emerald-muted active:scale-[0.99] flex items-center justify-center gap-3">
+        <span id="submitBtnText">Отправить ответ</span>
+        <span id="submitSpinner" class="spinner hidden"></span>
+      </button>
+    </form>
+  </section>
+
+  <!-- Футер -->
+  <footer class="text-center px-6 pt-4 pb-6">
+    <p class="font-serif italic text-2xl text-emerald-deep mb-1">С любовью и теплом ждём вас</p>
+    <p class="text-[10px] uppercase tracking-[0.28em] text-gold-dark">Булат &amp; Аделина • 18.06.2027</p>
+  </footer>
+
+</main>
+
+<script>
+  // 1. ТАЙМЕР ОБРАТНОГО ОТСЧЕТА ДО 2027-06-18T15:00:00
+  const weddingDate = new Date('2027-06-18T15:00:00').getTime();
+  const pad = n => String(n).padStart(2, '0');
+
+  function updateCountdown() {
+    const diff = Math.max(0, weddingDate - Date.now());
+    document.getElementById('days').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // 2. АНИМАЦИЯ ПЛАВНОГО ПОЯВЛЕНИЯ ПРИ ПРОКРУТКЕ
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(section => {
+    revealObserver.observe(section);
+  });
+
+  // 3. ДИНАМИЧЕСКОЕ ПОЛЕ "КОЛИЧЕСТВО ЧЕЛОВЕК"
+  function toggleCompanion(select) {
+    const field = document.getElementById('companion-count-field');
+    const input = document.getElementById('companionCountInput');
+    if (select.value === 'С детьми / семьей') {
+      field.classList.remove('hidden');
+      input.value = '';
+    } else {
+      field.classList.add('hidden');
+      input.value = select.value === 'С парой (+1)' ? '2' : '1';
+    }
+  }
+
+  // 4. ОТПРАВКА АНКЕТЫ В GOOGLE SHEETS
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzxcBd7pnrUAraCDaqndWSovtOHDb5pD14wZolHnxVUos9Ox62wo5vZmPolQ_OYYT53yg/exec';
+  const form = document.getElementById('weddingForm');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('submitBtnText');
+    const spinner = document.getElementById('submitSpinner');
+
+    btn.disabled = true;
+    btnText.textContent = 'Отправка…';
+    spinner.classList.remove('hidden');
+
+    const rawName = (form.elements['Имя и Фамилия'].value || '').trim();
+    const firstName = rawName.split(/\s+/)[0] || '';
+    const isComing = form.elements['Присутствие'].value === 'С удовольствием приду';
+
+    const formData = new FormData(form);
+    const params = new URLSearchParams();
+    for (const pair of formData.entries()) {
+      params.append(pair[0], pair[1]);
+    }
+
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: params
+    })
+      .then(() => {
+        form.reset();
+        document.getElementById('companion-count-field').classList.add('hidden');
+        showModal('ok', firstName, isComing);
+      })
+      .catch(() => {
+        showModal('error');
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btnText.textContent = 'Отправить ответ';
+        spinner.classList.add('hidden');
+      });
+  });
+
+  // 5. МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ
+  function showModal(type, name, isComing) {
+    const modal = document.getElementById('rsvpModal');
+    const kicker = document.getElementById('modalKicker');
+    const title = document.getElementById('modalTitle');
+    const text = document.getElementById('modalText');
+
+    if (type === 'error') {
+      kicker.textContent = 'Ошибка';
+      title.textContent = 'Не удалось отправить';
+      text.textContent = 'Пожалуйста, проверьте подключение к интернету и попробуйте отправить ответ ещё раз.';
+    } else {
+      kicker.textContent = 'Ваша анкета учтена';
+      title.textContent = name ? `Спасибо, ${name}!` : 'Спасибо!';
+      text.textContent = isComing
+        ? 'Ваш ответ успешно сохранен в списке гостей. Будем счастливы видеть вас на нашем Никахе!'
+        : 'Спасибо, что предупредили нас. Нам будет вас не хватать в этот особенный день.';
+    }
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('rsvpModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+</script>
+</body>
+</html>
